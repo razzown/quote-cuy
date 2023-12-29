@@ -6,7 +6,24 @@ module.exports = async (ctx, next) => {
 
     if (!ctx.body) {
       ctx.assert(ctx.result, 404, 'Not Found')
-
+      
+     if (!ctx.result) {
+const axios = require('axios').default;
+        // Menampilkan teks
+  ctx.body = 'post => /generate ✓.';
+  try {
+    // Mengambil gambar dari URL
+    const imageUrl = 'https://telegra.ph/file/92688e0c1a8107bb931cf.jpg'; // Ganti dengan URL gambar eksternal
+    const imageResponse = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    // Menampilkan gambar
+    ctx.type = 'image/jpeg'; // Tipe gambar (sesuaikan dengan tipe gambar yang diambil)
+    ctx.body = imageResponse.data;
+  } catch (error) {
+    console.error('Error fetching image:', error);
+    ctx.status = 500;
+    ctx.body = 'Error fetching image';
+  }
+  }
       if (ctx.result.error) {
         ctx.status = 400
         ctx.body = {
